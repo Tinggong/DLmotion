@@ -1,9 +1,9 @@
-# DL-based method for motion-robust diffusion kurtosis imaging
+PatchCNNforDMRI
+# DL-based method for motion-robust diffusion parameter estimation
 
 ## Purpose
 
-This code implements patch-based H-CNN method for motion-robust estimaiton of DKI- and DTI-derived
- diffusion measures described in the paper:
+This code implements patch-based CNN method for reducing residual motion effects in diffusion parameter estimation described in the paper:
 
 [1] Gong T, Tong Q, Li Z, He H, Zhang H, Zhong J. Deep learning-based method for reducing residual
     motion effects in diffusion parameter estimation. Magn Reson Med. 2020;00:1–16.
@@ -26,29 +26,30 @@ The current version is implemented in Python 3.7 using Keras with Tensorflow bac
 
 ### 2. Other tools useful for data preparation（please cite corresponding papers suggested if you use them):
 
-Diffusion data preprocessing: FSL at https://fsl.fmrib.ox.ac.uk/fsl/fslwiki
+a. Tool for diffusion data preprocessing: FSL at https://fsl.fmrib.ox.ac.uk/fsl/fslwiki
 
-Conventional DKI model fitting: Diffusion Kurtosis estimator (DKE) at https://www.nitrc.org/projects/dke 
+b. Tool for conventional model fitting. This tutoral uses DKI model as a demonstration and following tool can be found: 
+Diffusion Kurtosis estimator (DKE) at https://www.nitrc.org/projects/dke 
 or DESIGNER toolbox at https://github.com/NYU-DiffusionMRI/DESIGNER
 
 ## Quick-start tutorial
 
 The network model can be easily trained and used with command line inputs after preparing for all necessary files. Documentation for each command can be found using the -h flag. 
 
-### 1. Prepare for your training and testing datasets
+### 1. Prepare your datasets
 
 a. Data pre-processing: To correct for imaging artefacts and assess motion level for each dataset, preprocessing steps including B0 inhomogeneity, eddy current and motion correction are performed with TOPUP and EDDY in FSL.
 
-Files needed: diffusion.nii, nodif_brain_mask.nii; EDDY log files that are used for quality control: eddy_unwarped_images.eddy_parameters, eddy_unwarped_images.eddy_outlier_map
+Files generated: diffusion.nii, nodif_brain_mask.nii; EDDY log files that are used for quality control: eddy_unwarped_images.eddy_parameters, eddy_unwarped_images.eddy_outlier_map
      
-b. Conventional DKI fitting: To generate training labels for the training dataset or reference standards for testing dataset, conventional model-fitting should be performed with full avalible data. Python and bash scripts for DKI fitting with DKE tool is provided. If you use IRLLS fitting with DESIGNER toolbox, the dki_parameters.m needs to be modified to include KFA measure.
+b. Conventional DKI fitting for training dataset: To generate training labels for the training dataset, conventional model-fitting should be performed with full avalible data. Python and bash scripts for DKI fitting with DKE tool is provided. If you use IRLLS fitting with DESIGNER toolbox, the dki_parameters.m needs to be modified to include KFA measure.
 
-Files needed: AD.nii, RD.nii, MD.nii, FA.nii, AK.nii, RK.nii, MK.nii, KFA.nii
+Files generated for training subject: AD.nii, RD.nii, MD.nii, FA.nii, AK.nii, RK.nii, MK.nii, KFA.nii
 
-c. Data organisation: The dataset should be organised in folders named by the subject ID containing the necessary files for network use.
+c. Data organisation. The dataset should be organised in folders named by the subject ID containing the necessary files for network use.
 
 Mandatory files for training dataset: diffusion.nii, nodif_brain_mask.nii, AD.nii, RD.nii, MD.nii, FA.nii, AK.nii, RK.nii, MK.nii, KFA.nii
-Mandatory files for testing dataset: diffusion.nii, nodif_brain_mask.nii and the eddy log files for motion assessment
+Mandatory files for other datasets: diffusion.nii, nodif_brain_mask.nii and the eddy log files for motion assessment
 
 ### 2. Assess motion level for each dataset and generate subject-specific data selection scheme
 
@@ -71,19 +72,18 @@ a. Formatting full training dataset from traning subjects:
         
         python3 FormatData.py --path $DataDir --subjects S1 S2 --conv3d_train 
 
-b. Apply selection scheme and format test datase: 
+b. Apply selection scheme to each study dataset: 
         
         python3 FormatData.py --path $DataDir --subjects S3 --scheme filtered --test
 
-### 4. Network training and testing
+### 4. Train the subject-specific network model and apply the model to the study subject
 
 Check all available options and default values in /utils/model.py
 
-a. To train the 3D H-CNN model with data from S1, the volumes of which are selected from the selection scheme of the test subject S3; "weights" folder will be generated containing the trained model:
+a. This example trains the 3D H-CNN model with data from S1, the volumes of which are selected from the selection scheme of the study subject S3; the trained model is then applied to data of S3.
+"weights" folder will be generated containing the trained model;
+"nii" folder will be generated containing the estimated measures in nii format.
         
-        python3 Training.py --train_subjects S1 --test_subject S3 --schemename filtered --model conv3d_hcnn --train 
+        python3 dMRInet.py --train_subjects S1 --test_subject S3 --schemename filtered --model conv3d_hcnn --train 
     
-b. To apply trained model to the testing data; "nii" folder will be generated containing the estimated measures in nii format:
-        
-        python3 Testing.py --train_subjects S1 --test_subject S3 --schemename filtered --model conv3d_hcnn 
     
