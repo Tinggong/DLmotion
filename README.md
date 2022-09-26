@@ -43,24 +43,24 @@ The network model can be easily trained and used with command line inputs after 
 
 a. Data pre-processing: To correct for imaging artefacts and assess motion level for each dataset, preprocessing steps including B0 inhomogeneity, eddy current and motion correction are performed with TOPUP and EDDY in FSL.
 
-Generated files in subject folder: 
-diffusion.nii        # the 4D diffusion dataset
-nodif_brain_mask.nii # the binary brain mask
-bval                 # the b-values associated with each image volume
-bvec                 # the directions of diffusion gradients
-eddy_unwarped_images.eddy_parameters     # EDDY log files that are used for quality control; translations and rotations 
-eddy_unwarped_images.eddy_outlier_map    # EDDY log files that are used for quality control; outliers 
+        Generated files in subject folder: 
+        diffusion.nii        # the 4D diffusion dataset
+        nodif_brain_mask.nii # the binary brain mask
+        bval                 # the b-values associated with each image volume
+        bvec                 # the directions of diffusion gradients
+        eddy_unwarped_images.eddy_parameters     # EDDY log files that are used for quality control; translations and rotations 
+        eddy_unwarped_images.eddy_outlier_map    # EDDY log files that are used for quality control; outliers 
      
 b. Conventional model fitting for training dataset: To generate training labels for the training dataset, conventional model-fitting should be performed with full avalible data. 
 
-Generated training labels in training subject folder: 
-For DKI model: SubjID_AD.nii, SubjID_RD.nii, SubjID_MD.nii, SubjID_FA.nii, SubjID_AK.nii, SubjID_RK.nii, SubjID_MK.nii, SubjID_KFA.nii
-For NODDI model: SubjID_ficvf.nii, SubjID_fiso.nii, SubjID_odi.nii
+        Generated training labels in training subject folder: 
+        For DKI model: SubjID_AD.nii, SubjID_RD.nii, SubjID_MD.nii, SubjID_FA.nii, SubjID_AK.nii, SubjID_RK.nii, SubjID_MK.nii, SubjID_KFA.nii
+        For NODDI model: SubjID_ficvf.nii, SubjID_fiso.nii, SubjID_odi.nii
 
 c. Data organisation. The dataset should be organised in folders named by the subject ID containing the necessary files for network use.
 
-Mandatory files for training dataset: diffusion.nii, nodif_brain_mask.nii, and training labels.
-Mandatory files for other datasets: diffusion.nii, nodif_brain_mask.nii and the eddy log files for motion assessment
+        Mandatory files for training dataset: diffusion.nii, nodif_brain_mask.nii, and training labels.
+        Mandatory files for other datasets: diffusion.nii, nodif_brain_mask.nii and the eddy log files for motion assessment
 
 ### 2. Assess motion level for each dataset and generate subject-specific data selection scheme
 
