@@ -52,7 +52,10 @@ base = args.base
 savename = test_subject + str(nDWI)+ '-'  + scheme + '-' + args.model
 
 # Constants
-types = ['MD' , 'AD' , 'RD' , 'FA' , 'MK' , 'AK', 'RK', 'KFA']
+if mtype[-3:] == 'dki':
+    types = ['MD' , 'AD' , 'RD' , 'FA' , 'MK' , 'AK', 'RK', 'KFA']
+if mtype[-5:] == 'noddi':
+    types = ['ficvf' , 'fiso' , 'odi']
 ntypes = len(types)
 decay = 0.1
 

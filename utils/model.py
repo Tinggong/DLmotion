@@ -27,7 +27,7 @@ class MRIModel(object):
     _kernel2 = 150
     _kernel3 = 150
 
-    def __init__(self, ndwi=96, model='fc1d', layer=3, train=True, kernels=None, test_shape=[90, 90, 90]):
+    def __init__(self, ndwi=96, model='conv3d_dki', layer=3, train=True, kernels=None, test_shape=[90, 90, 90]):
         self._ndwi = ndwi
         self._type = model
         self._hist = None
@@ -36,23 +36,6 @@ class MRIModel(object):
         self._test_shape = test_shape
         if kernels is not None:
             self._kernel1, self._kernel2, self._kernel3 = kernels
-   
-    def _fc1d_model(self, patch_size):
-        """
-        Fully-connected 1d ANN model.
-        """
-        inputs = Input(shape=(self._ndwi,))
-        # Define hidden layer
-        hidden = Dense(self._kernel1, activation='relu')(inputs)
-        for i in np.arange(self._layer  - 1):
-            hidden = Dense(self._kernel1, activation='relu')(hidden)
-
-        hidden = Dropout(0.1)(hidden)
-
-        # Define output layer
-        outputs = Dense(8, name='output', activation='relu')(hidden)
-
-        self._model = Model(inputs=inputs, outputs=outputs)
 
     def _conv2d_model(self, patch_size):
         """
@@ -67,7 +50,7 @@ class MRIModel(object):
         for i in np.arange(self._layer - 1):
             hidden = Conv2D(self._kernel1, 1, strides=1, activation='relu', padding='valid')(hidden)
         hidden = Dropout(0.1)(hidden)
-        outputs = Conv2D(8, 1, strides=1, activation='relu', padding='valid')(hidden)
+        outputs = Conv2D(3, 1, strides=1, activation='sigmoid', padding='valid')(hidden)
 
         self._model = Model(inputs=inputs, outputs=outputs)
 
@@ -84,7 +67,7 @@ class MRIModel(object):
         for i in np.arange(self._layer - 1):
             hidden = Conv3D(self._kernel1, 1, activation='relu', padding='valid')(hidden)
         hidden = Dropout(0.1)(hidden)
-        outputs = Conv3D(8, 1, activation='relu', padding='valid')(hidden)
+        outputs = Conv3D(3, 1, activation='sigmoid', padding='valid')(hidden)
 
         self._model = Model(inputs=inputs, outputs=outputs)
 
@@ -135,11 +118,10 @@ class MRIModel(object):
         self._model = Model(inputs=inputs, outputs=[y, outputs])
 
     __model = {
-        'fc1d' : _fc1d_model,
-        'conv2d': _conv2d_model,
-        'conv3d' : _conv3d_model,
-        'conv2d_hcnn': _conv2d_staged_model,
-        'conv3d_hcnn' : _conv3d_staged_model,
+        'conv2d_noddi': _conv2d_model,
+        'conv3d_noddi' : _conv3d_model,
+        'conv2d_dki': _conv2d_staged_model,
+        'conv3d_dki' : _conv3d_staged_model,
     }
 
     def model(self, optimizer, loss, patch_size):
@@ -192,11 +174,10 @@ class MRIModel(object):
         self._loss.append(self._hist.history['output_loss'][-1])
 
     __train = {
-        'fc1d' : _sequence_train,
-        'conv2d': _sequence_train,
-        'conv3d' : _sequence_train,
-        'conv2d_hcnn': _staged_train,
-        'conv3d_hcnn' : _staged_train,
+        'conv2d_noddi': _sequence_train,
+        'conv3d_noddi' : _sequence_train,
+        'conv2d_dki': _staged_train,
+        'conv3d_dki' : _staged_train,
     }
 
     def train(self, data, label, nbatch, epochs, callbacks, weightname,
@@ -224,10 +205,10 @@ class MRIModel(object):
 
     def predict(self, data):
         """
-        Predict on test datas.
+        Predict on test data.
         """
         pred = self._model.predict(data)
-        if self._type[-4:] == 'hcnn':
+        if self._type[-3:] == 'dki':
             pred = np.concatenate((pred[0], pred[1]), axis=-1)
 
         return pred
@@ -246,7 +227,7 @@ def parser():
    # Training parameters
     parser.add_argument("--train", help="Train the network", action="store_true")
     parser.add_argument("--model", help="Train model",
-                        choices=['conv3d_hcnn','conv2d_hcnn','fc1d', 'conv2d', 'conv3d'], default='conv3d_hcnn')
+                        choices=['conv3d_dki','conv2d_dki','conv3d_noddi', 'conv2d_noddi'], default='conv3d_dki')
     parser.add_argument("--epoch", metavar='ep', help="Number of epoches", type=int, default=100)
     parser.add_argument("--lr", metavar='lr', help="Learning rates", type=float, default=0.001)
     
