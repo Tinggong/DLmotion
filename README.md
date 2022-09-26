@@ -28,6 +28,7 @@ The current version is implemented in Python 3.7 using Keras with Tensorflow bac
 a. Tool for diffusion data preprocessing: FSL at https://fsl.fmrib.ox.ac.uk/fsl/fslwiki
 
 b. Tool for conventional model fitting. 
+
         1. DKI model: This tutoral uses DKI model as a demonstration and following tool can be found: 
         Diffusion Kurtosis estimator (DKE) at https://www.nitrc.org/projects/dke 
         or DESIGNER toolbox at https://github.com/NYU-DiffusionMRI/DESIGNER
