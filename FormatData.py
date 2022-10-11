@@ -35,7 +35,7 @@ args = parser.parse_args()
 
 path = args.path
 subjects = args.subjects
-fc1d_train = args.fc1d_train
+#fc1d_train = args.fc1d_train
 test = args.test
 diffmodel = args.diffmodel
 
