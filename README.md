@@ -2,7 +2,7 @@
 
 ## Purpose
 
-This code implements patch-based CNN method for reducing residual motion effects in diffusion parameter estimation described in the paper:
+This code implements patch-based CNN method for reducing residual motion effects in diffusion parameter estimation described in the paper[1]. While the DKI model is demonstrated in the paper, this code also provides an implementation for the NODDI model. 
 
 [1] Gong T, Tong Q, Li Z, He H, Zhang H, Zhong J. Deep learning-based method for reducing residual
     motion effects in diffusion parameter estimation. Magn Reson Med. 2020;00:1–16.
@@ -11,7 +11,7 @@ This code implements patch-based CNN method for reducing residual motion effects
 
 The current version is implemented in Python 3.7 using Keras with Tensorflow backend.
 
-### 1. Packages needed for the H-CNN model:
+### 1. Packages needed for the patch-based CNN model:
     # Install tensorflow (which now includes keras) these two librarys are used for deep learning in python
     pip3 install tensorflow==2.3.1
 
@@ -73,7 +73,7 @@ a. Read from eddy log files to generate measures of motion level for each volume
         A txt file 'QAfrom-eddylog.txt' will be generated in the same subject folder, where each row containing the following measures of each volume (t0, t1, r0, r1, outlier): 
         (transform relative to first volume, transform relative to previous volume, rotation relative to first volume, rotation relative to previous volume, percentage of slices with outliers)
 
-b. Apply thresholds to each of the motion assessment measures in 'QAfrom-eddylog.txt' to select motion-free volumes for usagage. A file defined by the --schemename will be generated in the same subject folder, containing 1 for the selected image volumes and 0 for all other volumes. 
+b. Apply thresholds to each of the motion assessment measures in 'QAfrom-eddylog.txt' to select motion-free volumes for usagage. A file defined by the --schemename will be generated in the same subject folder, containing 1 for the selected image volumes and 0 for all other volumes. See SelectScheme.py for details.
 
         python3 SelectScheme.py --path $SubjDir --t0 2 --t1 1.5 --r0 2 --r1 1.5 --outlier 0.05 --schemename filtered
 
