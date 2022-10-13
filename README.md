@@ -85,7 +85,7 @@ See FormatData.py for details; /datasets folder will be generated in your code f
 
 a. Formatting full training dataset from traning subjects (dki model as an example):
         
-        python3 FormatData.py --path $DataDir --subjects S1 S2 --diffmodel dki --conv3d_train 
+        python3 FormatData.py --path $DataDir --subjects S1 S2 --diffmodel dki --conv2d_train 
 
 b. Apply selection scheme to each study dataset: 
         
@@ -99,6 +99,6 @@ a. This example trains the 3D H-CNN model for DKI with data from S1, the volumes
 "weights" folder will be generated containing the trained model;
 "nii" folder will be generated containing the estimated measures in nii format.
         
-        python3 dMRInet.py --train_subjects S1 --test_subject S3 --schemename filtered --model conv3d_dki --train 
+        python3 dMRInet.py --train_subjects S1 --test_subject S3 --schemename filtered --model conv2d_dki --train 
     
     
