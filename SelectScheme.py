@@ -12,7 +12,7 @@ and eddy_combine is used for the preprocessed diffusion dataset, add the followi
 
 python3 SelectScheme.py --path SubjDir --t0 2 --t1 1.5 --r0 2 --r1 1.5 --outlier 0.05 --schemename scheme --APPA True
 
-Author: Ting Gong
+Author: Zhiwei Li, Ting Gong
 """
 
 import argparse

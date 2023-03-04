@@ -2,28 +2,43 @@
 
 ## Purpose
 
-This code implements patch-based CNN method for reducing residual motion effects in diffusion parameter estimation described in the paper[1]. While the DKI model is demonstrated in the paper, this code also provides an implementation for the NODDI model. 
+This code implements patch-based CNN method for reducing residual motion effects in diffusion parameter estimation described in the paper[1]. While the DKI model is demonstrated in the paper and details can be found here[2], this code also provides an implementation for the NODDI model. 
 
 [1] Gong T, Tong Q, Li Z, He H, Zhang H, Zhong J. Deep learning-based method for reducing residual
     motion effects in diffusion parameter estimation. Magn Reson Med. 2020;00:1–16.
 
+[2] Li Z, Gong T, Lin Z, He H, Tong Q, Li C, Sun Y, Yu F, Zhong J. Fast and robust diffusion kurtosis parametric mapping using a three-dimensional convolutional neural network. IEEE Access. 2019 May 27;7:71398-411.
+
 ## Dependencies
 
-The current version is implemented in Python 3.7 using Keras with Tensorflow backend.
+The current version is implemented in Python 3.7 using Keras with Tensorflow backend. Anaconda/Miniconda is recommended to install where you can use Conda commands to easily configure different environments. Follow the installation here: https://conda.io/projects/conda/en/latest/user-guide/install/index.html
 
-### 1. Packages needed for the patch-based CNN model:
-    # Install tensorflow (which now includes keras) these two librarys are used for deep learning in python
-    pip3 install tensorflow==2.3.1
+### 1. Setting up the environment for Python version of 3.7
 
-    # Install scipy and numpy these libraries are used for performing mathmatical calculations on datasets 
-    pip3 install scipy
-    pip3 install numpy==1.17.0
+        # Create a new environment with python version of 3.7
+        conda create --name your_env_name python=3.7   
 
-    # Install nipy, this library is used for loading NIfTI images (.nii/.nii.gz). This is how MRI images are normally saved
-    pip3 install nipy==0.4.2
+        # Activate the environment when you need to use it
+        conda activate your_env_name 
+
+        # Deactivate the enviroment when you have finished using it   
+        conda deactivate
 
 
-### 2. Other tools useful for data preparation（please cite corresponding papers suggested if you use them):
+### 2. Packages needed for the patch-based CNN model:
+
+         # Install tensorflow (which now includes keras) these two librarys are used for deep learning in python
+        pip3 install tensorflow==2.3.1
+
+         # Install scipy and numpy these libraries are used for performing mathmatical calculations on datasets 
+        pip3 install scipy
+        pip3 install numpy==1.17.0
+
+         # Install nipy, this library is used for loading NIfTI images (.nii/.nii.gz). This is how MRI images are normally saved
+         pip3 install nipy==0.4.2
+
+
+### 3. Other tools useful for data preparation（please cite corresponding papers suggested if you use them):
 
 a. Tool for diffusion data preprocessing: FSL at https://fsl.fmrib.ox.ac.uk/fsl/fslwiki
 

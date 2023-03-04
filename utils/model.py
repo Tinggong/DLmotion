@@ -1,6 +1,6 @@
 """
 Module definition for network training and testing.
-
+Zhiwei Li, Ting Gong
 """
 
 import os

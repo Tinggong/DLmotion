@@ -1,6 +1,6 @@
 """
 Definition of loss functions
-
+Zhiwei Li
 """
 
 import numpy as np

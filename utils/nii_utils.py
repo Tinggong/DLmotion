@@ -1,6 +1,6 @@
 """
 Functions for load data and save data from nii image
-
+Zhiwei Li
 """
 
 import os

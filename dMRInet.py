@@ -2,7 +2,7 @@
 Main script for network training
 Definition of the command-line arguments are in model.py and can be displayed by `python dMRInet.py -h`
 
-Author: Ting Gong 
+Author: Zhiwei Li, Ting Gong 
 """
 
 import numpy as np

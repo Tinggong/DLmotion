@@ -7,7 +7,7 @@ for each volume.
 
 Usage: python QAeddy.py --path $SubjDir --eddyname $PrefixName
 
-Author: Ting Gong
+Author: Zhiwei Li, Ting Gong
 """
 
 import argparse

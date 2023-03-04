@@ -14,7 +14,7 @@ Usage:
     python FormatData.py --path $DataDir --subjects TestSubjID1 --schemename scheme --test 
 
 
-Author: Ting Gong
+Author: Zhiwei Li, Ting Gong
 """
 import argparse
 import numpy as np
